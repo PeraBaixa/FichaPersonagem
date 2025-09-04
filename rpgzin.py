@@ -1,12 +1,13 @@
 import random
 #classes
-class Persona():
-    def __init__(obj, vida, ataque):
-        obj.vida = [vida, 0]
-        obj.ataque = ataque
+class Persona:
+    def __init__(obj, nome):
+        obj.nome = nome
+        obj.vida = [0, 0]
         obj.atributos = {"FOR": 0, "DES": 0, "CON": 0, "INT": 0, "SAB": 0, "CAR": 0}
         obj.bonAtr = {"FOR": 0, "DES": 0, "CON": 0, "INT": 0, "SAB": 0, "CAR": 0}
-        obj.listaAtaques = []
+        obj.ataques = []
+        obj.caracs = []
         obj.resist = []
         obj.fraq = []
 
@@ -44,8 +45,11 @@ class Persona():
                 "INT": (obj.atributos["INT"]+obj.bonAtr["INT"]),
                 "SAB": (obj.atributos["SAB"]+obj.bonAtr["SAB"]),
                 "CAR": (obj.atributos["CAR"]+obj.bonAtr["CAR"])}
+    
+    def setVida(obj, vida):
+        obj.vida[0] = vida
 
-class Ataque():
+class Ataque:
     def __init__(obj, tipo, efeito, desc, bonus):
         #tipo do dano ('suporte' se for uma forma de cura)
         obj.tipo = tipo
@@ -73,6 +77,22 @@ class Ataque():
     def acao():
         return random.random(1, efeito[0])+efeito[1]
 
-pessoa = Persona(30, 30)
-pessoa.recebeAtr(15, 10, 16, 8, 12, 7)
-print(pessoa.retornaAtr())
+class Carac:
+    def __init__(obj, nome, bonus, atr):
+        match atr:
+            case 'FOR'|'DES'|'CON'|'INT'|'SAB'|'CAR':
+                obj.atr = atr
+            case __:
+                print("Atributo inválido")
+                return None
+        obj.nome = nome
+        obj.bonus = bonus
+       
+    def getBonus(obj):
+        return [obj.bonus, obj.atr]
+    
+    def __str__(obj):
+        return f"O nome dessa característia é {obj.nome}
+
+carc = Carac('Fogo', 4, 'CON')
+print(carc)
