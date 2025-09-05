@@ -112,6 +112,11 @@ class Carac:
     def __str__(obj):
         return f"O nome dessa característia é {obj.nome}"
 
+class Arma:
+    def __init__(obj, nome, ataque):
+        obj.nome = nome
+        obj.ataque = ataque
+
 caracs = [Carac('Pele de fogo', 4)]
 caracs.append(Carac('Língua de aço', 3, 'CAR'))
 caracs.append(Carac('Poder do aço', 5, 'CON'))
