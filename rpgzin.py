@@ -48,6 +48,24 @@ class Persona:
     
     def setVida(obj, vida):
         obj.vida[0] = vida
+    
+    def adiCarac(obj, carac):
+        if carac.atr != 'SUP':
+            obj.bonAtr[carac.atr] += carac.bonus
+        obj.caracs.append(carac)
+    
+    def delCarac(obj, caracNome):
+        cont = 0
+        
+        while cont < len(obj.caracs):
+            if obj.caracs[cont].nome == caracNome:
+                if obj.caracs[cont].atr != 'SUP':
+                    obj.bonAtr[obj.caracs[cont].atr] -= obj.caracs[cont].bonus
+                del obj.caracs[cont]
+                break
+            cont += 1
+        else:
+            print(f"O personagem {obj.nome} não tem a caracteristica {caracNome}")
 
 class Ataque:
     def __init__(obj, tipo, efeito, desc, bonus):
@@ -78,21 +96,30 @@ class Ataque:
         return random.random(1, efeito[0])+efeito[1]
 
 class Carac:
-    def __init__(obj, nome, bonus, atr):
-        match atr:
-            case 'FOR'|'DES'|'CON'|'INT'|'SAB'|'CAR':
-                obj.atr = atr
-            case __:
-                print("Atributo inválido")
-                return None
+    def __init__(obj, nome, bonus, *atr):
         obj.nome = nome
         obj.bonus = bonus
+        obj.atr = 'SUP'
+
+        if len(atr) > 0:
+            match atr[0]:
+                case 'FOR'|'DES'|'CON'|'INT'|'SAB'|'CAR':
+                    obj.atr = atr[0]
        
     def getBonus(obj):
         return [obj.bonus, obj.atr]
     
     def __str__(obj):
-        return f"O nome dessa característia é {obj.nome}
+        return f"O nome dessa característia é {obj.nome}"
 
-carc = Carac('Fogo', 4, 'CON')
-print(carc)
+caracs = [Carac('Pele de fogo', 4)]
+caracs.append(Carac('Língua de aço', 3, 'CAR'))
+caracs.append(Carac('Poder do aço', 5, 'CON'))
+
+link = Persona('Link')
+link.recebeAtr(16, 15, 14, 13, 12, 11)
+print(f"Seu carisma é {link.retornaAtr()['CAR']} sem uma caracteristica")
+link.adiCarac(caracs[1])
+print(f"Seu carisma é {link.retornaAtr()['CAR']} com uma caracteristica")
+link.delCarac('Língua de aço')
+print(f"Seu carisma é {link.retornaAtr()['CAR']} sem uma caracteristica")
